@@ -1,7 +1,7 @@
 # ls-cache
 Simple localStorage caching library
 
-##Usage
+## Usage
 ```js
 const cache = new Cache({
   maxEntries: 100,
