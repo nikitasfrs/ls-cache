@@ -17,7 +17,7 @@
 export default class Cache {
   constructor ({
     maxEntries = 100,
-    mountIn = '__ls-cache__'
+    mountIn = '__ls-cache__',
     namespace = 'custom',
     cacheMinutes = 30,
     version = 1,
