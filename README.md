@@ -8,6 +8,5 @@ const cache = new Cache({
   mountIn: 'Acme Inc.',
   namespace: 'base-product'
   cacheMinutes: 30,
-  keyNormalizer: normalizeUrl
 });
 ```
