@@ -16,7 +16,7 @@
     "localstorage"
   ],
   "author": "Nikitas Frantzeskakis",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/nikitasfrs/ls-cache/issues"
   },
