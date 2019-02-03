@@ -53,10 +53,7 @@ function fetchData(url, responseType, caching) {
     return Promise.resolve(cachedItem);
   } else {
     return fetch(url, {
-      method: 'GET',
-      headers: {
-        Authorization: token
-      }
+      method: 'GET'
     }).then(res => {
         const result = res.json();
         if (caching) {
