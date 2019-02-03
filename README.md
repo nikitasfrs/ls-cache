@@ -23,7 +23,6 @@ A normalizer function which will get called each time a key gets set through a g
 As an example, a cache instance containing JSON network response objects, having the request URL as keys can be implemented in the following way:
 
 ```js
-
 // Sorts query parameters in a URL, for consistency
 function normalizeUrl(url = '') {
   const [ params, qs ] = url.split('?');
@@ -38,6 +37,7 @@ function normalizeUrl(url = '') {
   return url; 
 }
 
+// Create a cache instance
 const cache = new Cache({
   maxEntries: 100,
   mountIn: 'Acme Inc.',
@@ -46,7 +46,8 @@ const cache = new Cache({
   keyNormalizer: normalizeUrl
 });
 
-function fetchData(url, responseType, caching) {
+// Example function used inside a module to initiate network requests
+function fetchData(url, caching) {
   const cachedItem = cache.get(url);
 
   if (caching && cachedItem) {
@@ -66,6 +67,5 @@ function fetchData(url, responseType, caching) {
     });
   }
 }
-
 ```
 
