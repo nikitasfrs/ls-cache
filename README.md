@@ -2,7 +2,7 @@
 Simple localStorage caching library
 
 ## Usage
-```jsyy
+```js
 const cache = new Cache({
   maxEntries: 100,
   mountIn: 'Acme Inc.',
