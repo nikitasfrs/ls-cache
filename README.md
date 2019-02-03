@@ -17,9 +17,14 @@ console.log(item);    // {bar: 'baz'}
 ```
 
 ### Key normalizer support
-A normalizer function which will get called each time a key gets set through a given cache instance, can be supplied via the `keyNormalizer` property, optionally, in the constructor object:
+A normalizer function which will get called each time a key gets set through a given cache instance, can be supplied via the `keyNormalizer` property, optionally, in the constructor object.
+
+
+As an example, a cache instance containing JSON network response objects, having the request URL as keys can be implemented in the following way:
 
 ```js
+
+// Sorts query parameters in a URL, for consistency
 function normalizeUrl(url = '') {
   const [ params, qs ] = url.split('?');
   if (!qs) {
