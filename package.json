@@ -2,11 +2,18 @@
   "name": "ls-cache",
   "version": "1.0.0",
   "description": "Simple localStorage caching library",
-  "main": "src/index.js",
+  "main": "src/index.ts",
+  "types": "src/index.d.ts",
   "scripts": {
-    "build:dev": "./node_modules/webpack/bin/webpack.js --mode=development -w",
-    "build:prod": "./node_modules/webpack/bin/webpack.js --mode=production",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "lint": "tslint -p tsconfig.json",
+    "test": "jest --config jestconfig.json",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test && npm run lint",
+    "preversion": "npm run lint",
+    "version": "npm run format && git add -A src",
+    "postversion": "git push && git push --tags"
   },
   "repository": {
     "type": "git",
@@ -20,13 +27,19 @@
   "bugs": {
     "url": "https://github.com/nikitasfrs/ls-cache/issues"
   },
+  "files": [
+    "dist/**/*"
+  ],
   "homepage": "https://github.com/nikitasfrs/ls-cache#readme",
   "dependencies": {},
   "devDependencies": {
-    "@babel/core": "^7.2.2",
-    "@babel/preset-env": "^7.2.3",
-    "babel-loader": "^8.0.5",
-    "webpack": "^4.28.4",
-    "webpack-cli": "^3.2.1"
+    "@types/jest": "^23.3.13",
+    "babel-jest": "^24.0.0",
+    "jest": "^24.0.0",
+    "prettier": "^1.16.4",
+    "ts-jest": "^23.10.5",
+    "tslint": "^5.12.1",
+    "tslint-config-prettier": "^1.17.0",
+    "typescript": "^3.3.1"
   }
 }

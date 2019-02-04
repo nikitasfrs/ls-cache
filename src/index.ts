@@ -1,5 +1,5 @@
 /**
- * localStorage caching 
+ * localStorage caching
  *
  * Use unique keys and/or a keyNormalizer function for efficiency.
  *
@@ -15,27 +15,36 @@
  *
  */
 export default class Cache {
-  constructor ({
+  private namespace: string;
+  private storageKey: string;
+  private storage: Map<string, string>;
+  private maxEntries: number;
+  private cacheMinutes: number;
+  private version: number;
+  private mountIn: string;
+  private keyNormalizer: (key: string) => string;
+
+  constructor({
     maxEntries = 100,
     mountIn = '__ls-cache__',
     namespace = 'custom',
     cacheMinutes = 30,
     version = 1,
-    keyNormalizer = (key) => key
+    keyNormalizer = key => key,
   }) {
     this.namespace = namespace;
     this.version = version;
     this.storageKey = `${mountIn}/${namespace}/${version}`;
     this.storage = this.getStorage();
-    
-    this.normalizeKey = keyNormalizer;
+
+    this.keyNormalizer = keyNormalizer;
     this.maxEntries = maxEntries;
     this.cacheMinutes = cacheMinutes;
 
     this.flushPreviousVersion();
   }
-  flushPreviousVersion() {
-    const { namespace, version } = this;
+  private flushPreviousVersion() {
+    const { namespace, version, mountIn } = this;
     if (version > 1) {
       try {
         for (let i = version; i > 0; i--) {
@@ -44,7 +53,7 @@ export default class Cache {
       } catch (err) {} // eslint-disable-line no-empty
     }
   }
-  getStorage () {
+  private getStorage() {
     if (window.localStorage) {
       const storedStorage = window.localStorage.getItem(this.storageKey);
 
@@ -53,11 +62,10 @@ export default class Cache {
       }
     }
     return new Map();
-
   }
-  setStorage(storage) {
+  private setStorage(storage: Map<string, string>) {
     this.storage = storage;
-    if (window.localStorage) {
+    if (window && window.localStorage) {
       try {
         window.localStorage.setItem(this.storageKey, this.mapToJson(storage));
       } catch (err) {
@@ -65,27 +73,28 @@ export default class Cache {
       }
     }
   }
-  mapToJson(map = new Map()) {
+  private mapToJson(map: Map<string, string> = new Map()): string {
     try {
       return JSON.stringify(Array.from(map));
     } catch (err) {} // eslint-disable-line no-empty
   }
-  jsonToMap(jsonStr) {
+  private jsonToMap(jsonStr) {
     try {
       return new Map(JSON.parse(jsonStr));
     } catch (err) {
       return new Map();
     }
   }
-  has(key) {
-    const normalizedKey = this.normalizeKey(key);
+  has(key: string): boolean {
+    const normalizedKey = this.keyNormalizer(key);
     if (!this.storage.has(normalizedKey)) {
       return false;
     }
     const now = new Date().getTime();
     try {
       const { __timestamp__ } = JSON.parse(this.storage.get(normalizedKey));
-      if (((now - __timestamp__) / 60000) >= this.cacheMinutes) { // cleanup expired
+      if ((now - __timestamp__) / 60000 >= this.cacheMinutes) {
+        // cleanup expired
         this.storage.delete(normalizedKey);
         this.setStorage(this.storage);
         return false;
@@ -95,21 +104,21 @@ export default class Cache {
       return false;
     }
   }
-  get(key) {
+  get(key: string) {
     if (!this.has(key)) {
       return null;
     }
     try {
-      const normalizedKey = this.normalizeKey(key);
-      return JSON.parse(this.storage.get(normalizedKey)).value
+      const normalizedKey = this.keyNormalizer(key);
+      return JSON.parse(this.storage.get(normalizedKey)).value;
     } catch (err) {
       return null;
     }
   }
-  set(key, value) {
+  set(key: string, value: object) {
     const result = {
       __timestamp__: new Date().getTime(),
-      value
+      value,
     };
 
     if (this.storage.size === this.maxEntries) {
@@ -118,7 +127,7 @@ export default class Cache {
       this.storage.delete(firstKey);
     }
     try {
-      const normalizedKey = this.normalizeKey(key);
+      const normalizedKey = this.keyNormalizer(key);
       const storage = this.storage.set(normalizedKey, JSON.stringify(result));
       this.setStorage(storage);
     } catch (err) {} // eslint-disable-line no-empty
