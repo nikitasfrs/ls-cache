@@ -1,3 +1,13 @@
+interface ILSCache {
+  namespace: string;
+  mountIn: string;
+  storage: Map<string, string>;
+  maxEntries: number;
+  cacheMinutes: number;
+  version: number;
+  keyNormalizer: (key: string) => string;
+}
+
 /**
  * localStorage caching
  *
@@ -14,7 +24,7 @@
  * @author Nikitas Frantzeskakis
  *
  */
-export default class Cache {
+export default class LSCache {
   private namespace: string;
   private storageKey: string;
   private storage: Map<string, string>;
@@ -31,7 +41,7 @@ export default class Cache {
     cacheMinutes = 30,
     version = 1,
     keyNormalizer = key => key,
-  }) {
+  }: ILSCache) {
     this.namespace = namespace;
     this.version = version;
     this.storageKey = `${mountIn}/${namespace}/${version}`;
