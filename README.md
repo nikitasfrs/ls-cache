@@ -1,7 +1,9 @@
 # ls-cache
+
 Simple localStorage caching library
 
 ## Usage
+
 ```js
 const cache = new Cache({
   maxEntries: 100,
@@ -12,13 +14,13 @@ const cache = new Cache({
 
 cache.set("data_key_foobar", {bar: 'baz'}); // entry for this key will remain in cache for 30 minutes
 
-const item = cache.get("deta_key_foobar");     
+const item = cache.get("deta_key_foobar");
 console.log(item);    // {bar: 'baz'}
 ```
 
 ### Key normalizer support
-A normalizer function which will get called each time a key gets set through a given cache instance, can be supplied via the `keyNormalizer` property, optionally, in the constructor object.
 
+A normalizer function which will get called each time a key gets set through a given cache instance, can be supplied via the `keyNormalizer` property, optionally, in the constructor object.
 
 As an example, a cache instance containing JSON network response objects, having the request URL as keys can be implemented in the following way:
 
@@ -34,7 +36,7 @@ function normalizeUrl(url = '') {
     searchParams.sort();
     return `${params}?${searchParams}`;
   }
-  return url; 
+  return url;
 }
 
 // Create a cache instance
@@ -69,3 +71,6 @@ function fetchData(url, caching) {
 }
 ```
 
+## License
+
+MIT
