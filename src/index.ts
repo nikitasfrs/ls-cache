@@ -34,14 +34,16 @@ export default class LSCache {
   private mountIn: string;
   private keyNormalizer: (key: string) => string;
 
-  constructor({
-    maxEntries = 100,
-    mountIn = '__ls-cache__',
-    namespace = 'custom',
-    cacheMinutes = 30,
-    version = 1,
-    keyNormalizer = key => key,
-  }: ILSCache) {
+  constructor(opt: ILSCache) {
+    const {
+      maxEntries = 100,
+      mountIn = '__ls-cache__',
+      namespace = 'custom',
+      cacheMinutes = 30,
+      version = 1,
+      keyNormalizer = key => key,
+    } = opt;
+
     this.namespace = namespace;
     this.version = version;
     this.storageKey = `${mountIn}/${namespace}/${version}`;
