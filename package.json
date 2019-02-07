@@ -2,8 +2,8 @@
   "name": "ls-cache",
   "version": "1.0.0",
   "description": "Simple localStorage caching library",
-  "main": "src/index.ts",
-  "types": "src/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
@@ -34,7 +34,6 @@
   "dependencies": {},
   "devDependencies": {
     "@types/jest": "^23.3.13",
-    "babel-jest": "^24.0.0",
     "jest": "^24.0.0",
     "prettier": "^1.16.4",
     "ts-jest": "^23.10.5",
